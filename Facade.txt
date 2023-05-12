@@ -1,0 +1,87 @@
+FACADE
+Fasad, kitabxanaya və ya hər hansı digər mürəkkəb siniflər dəstinə sadələşdirilmiş interfeys təmin edən dizayn pattern nümunəsidir.
+Mürəkkəb bir alt sistem üçün məhdud, lakin sadə interfeysə ehtiyacınız olduqda Fasad modelindən istifadə edin.
+Çox vaxt alt sistemlər zaman keçdikcə daha mürəkkəbləşir. Hətta dizayn nümunələrinin tətbiqi adətən daha çox sinif yaratmağa səbəb olur.
+Beləliklə onun müştəridən tələb etdiyi konfiqurasiya və standart kodun miqdarı getdikcə artır. 
+Fasad, əksər müştəri tələblərinə uyğun gələn alt sistemin ən çox istifadə olunan xüsusiyyətlərinə qısa yol təqdim etməklə bu problemi həll etməyə çalışır.
+Alt sistemi təbəqələrə qurmaq istədiyimiz zaman Fasaddan istifadə edirik.
+Qısa desek siz kodunuzu alt sistemin mürəkkəbliyindən təcrid edə bilərsiniz.
+
+
+
+PROBLEM
+Təsəvvür edin ki, kodunuzun kompleks kitabxanaya və ya framworka aid olan geniş çeşidli obyektlərlə işləməsini təmin etməlisiniz. 
+Tipik olaraq, siz bu obyektlərin hamısını işə salmalı, asılılıqları izləməli, metodları düzgün ardıcıllıqla icra etməlisiniz və s.
+Nəticə olaraq, classlarinizin biznes məntiqi aşağı siniflərin icra detalları ilə sıx birləşdirilərək başa düşülməsini və saxlanmasını çətinləşdirəcək.
+
+
+
+SOLUTİON
+
+Fasad çoxlu hərəkət edən hissələrdən ibarət mürəkkəb alt sistemə sadə interfeys təqdim edən sinifdir. 
+Bir fasad birbaşa alt sistemlə işləməkdən fərqli olaraq məhdud funksionallıq təmin edə bilər. 
+Bununla belə, o, yalnız müştərilərin həqiqətən əhəmiyyət verdiyi xüsusiyyətləri ehtiva edir.
+Tətbiqinizi onlarla funksiyaya malik olan mürəkkəb kitabxana ilə inteqrasiya etməyiniz lazım olduqda, fasadın olması əlverişlidir,
+ancaq onun funksionallığının kiçik bir hissəsinə ehtiyacınız var.
+
+Məsələn, pişiklərlə qısa məzəli videoları sosial mediaya yükləyən proqram potensial olaraq peşəkar video çevirmə kitabxanasından istifadə edə bilər. 
+Bununla belə, ona həqiqətən ehtiyacı olan tək metod kodlaşdırması olan bir sinifdir (fayl adı, format). Belə bir sinif yaratdıqdan və onu video çevirmə
+kitabxanası ilə birləşdirdikdən sonra ilk fasadınız olacaq.
+
+Alt sistemin hər səviyyəsinə giriş nöqtələrini müəyyən etmək üçün fasadlar yaradın.
+Çoxlu alt sistemlər arasında əlaqəni yalnız fasadlar vasitəsilə əlaqə saxlamağı tələb etməklə azalda bilərsiniz.
+Məsələn, video çevirmə çərçivəmizə qayıdaq. Onu iki təbəqəyə bölmək olar: video və audio ilə əlaqəli. 
+Hər bir təbəqə üçün bir fasad yarada və sonra hər təbəqənin siniflərini həmin fasadlar vasitəsilə bir-biri ilə əlaqə qura bilərsiniz. 
+Bu yanaşma Mediator modelinə çox bənzəyir.
+
+
+Real-World Analogy
+Telefonla sifariş vermək üçün mağazaya zəng etdiyiniz zaman, operator sizin mağazanın bütün xidmət və şöbələri qarşısındakı fasadınızdır.
+ Operator sizə sifariş sistemi, ödəniş şlüzləri və müxtəlif çatdırılma xidmətləri üçün sadə səsli interfeys təqdim edir.
+
+
+
+STRUCTURE
+1.Fasad alt sistemin funksionallığının müəyyən hissəsinə rahat girişi təmin edir. 
+Müştərinin tələbini hara yönəltəcəyini və bütün hərəkət edən hissələri necə idarə edəcəyini bilir.
+
+2.Tək fasadın başqa bir mürəkkəb quruluşa çevrilə bilən əlaqəli olmayan xüsusiyyətləri ilə çirklənməsinin qarşısını almaq üçün Əlavə Fasad sinfi yaradıla bilər. 
+Əlavə fasadlar həm müştərilər, həm də digər fasadlar tərəfindən istifadə edilə bilər.
+
+3.Kompleks Altsistem onlarla müxtəlif obyektlərdən ibarətdir. 
+Onların hamısını mənalı bir şey etmək üçün, obyektləri düzgün qaydada başlatmaq və onları lazımi formatda 
+məlumatlarla təmin etmək kimi alt sistemin icra detallarına dərindən girməlisiniz.
+Alt sistem sinifləri fasadın mövcudluğundan xəbərsizdir. Onlar sistem daxilində fəaliyyət göstərir və birbaşa bir-biri ilə işləyirlər.
+
+4.Müştəri birbaşa alt sistem obyektlərini çağırmaq əvəzinə fasaddan istifadə edir.
+img
+
+
+
+Bu nümunədə Fasad nümunəsi mürəkkəb video çevrilmə çərçivəsi ilə qarşılıqlı əlaqəni asanlaşdırır.
+img
+
+
+How to Implement
+1.Mövcud alt sistemin təmin etdiyindən daha sadə interfeys təqdim etməyin mümkün olub olmadığını yoxlayın. 
+Bu interfeys müştəri kodunu bir çox alt sistemin siniflərindən müstəqil edirsə, siz düzgün yoldasınız.
+
+
+2.Bu interfeysi yeni fasad sinfində elan edin və tətbiq edin. Fasad zəngləri müştəri kodundan alt sistemin müvafiq obyektlərinə yönləndirməlidir. 
+Fasad, müştəri kodu bunu etmədiyi halda, alt sistemin işə salınması və onun sonrakı həyat dövrünün idarə edilməsi üçün cavabdeh olmalıdır.
+
+
+3.Nümunədən tam fayda əldə etmək üçün bütün müştəri kodunu alt sistemlə yalnız fasad vasitəsilə əlaqə saxlamağa məcbur edin. 
+İndi müştəri kodu alt sistem kodundakı hər hansı dəyişikliklərdən qorunur. 
+Məsələn, bir alt sistem yeni versiyaya yüksəldildikdə, yalnız fasaddakı kodu dəyişdirməlisiniz.
+
+
+4.Fasad çox böyük olarsa, onun davranışının bir hissəsini yeni, zərif fasad sinfinə çıxarmağı düşünün.
+
+
+
+FİNAL
+Kodunuzu birbaşa onlarla framework sinifləri ilə işləmək əvəzinə, siz bu funksionallığı əhatə edən və kodun qalan hissəsindən gizlədən fasad sinfi yaradırsınız. 
+Bu struktur həmçinin frameworkun gələcək versiyalarına təkmilləşdirmək və ya onu başqası ilə əvəz etmək səylərini minimuma endirməyə kömək edir. 
+Tətbiqinizdə dəyişdirməyiniz lazım olan yeganə şey fasad üsullarının həyata keçirilməsidir.
+

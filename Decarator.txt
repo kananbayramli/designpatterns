@@ -1,0 +1,91 @@
+DECORATOR
+Dekorator, obyektləri xüsusi sarğı(wrapper) obyektlərinin içərisinə yerləşdirməklə 
+obyektlərə yeni davranışlar əlavə etməyə imkan verən struktur dizayn nümunəsidir.
+img
+
+
+Istifadə olunan kodu pozmadan, iş zamanı obyektlərə əlavə davranışlar təyin edə bilmək lazım olduqda, Dekoratordan istifadə edirik.
+Dekorator sizə biznes məntiqinizi təbəqələrə strukturlaşdırmağa, 
+hər bir təbəqə üçün dekorator yaratmağa və icra zamanı bu məntiqin müxtəlif kombinasiyaları ilə obyektlər yaratmağa imkan verir. 
+Müştəri kodu bütün bu obyektlərlə eyni şəkildə davrana bilər, çünki onların hamısı ümumi interfeysə əməl edir.
+
+Vərəsəlikdən istifadə edərək obyektin davranışını genişləndirmək yöndəmsiz olduqda və ya mümkün olmadıqda Decoratoordan istifadə edirik.
+
+Bir çox proqramlaşdırma dillərində sinfin daha da genişləndirilməsinin qarşısını almaq üçün istifadə edilə bilən son açar söz var. 
+Son sinif üçün, mövcud davranışdan təkrar istifadə etməyin yeganə yolu, 
+Dekorator nümunəsindən istifadə edərək, sinfi öz sarğısi ilə bağlamaq olardı.
+
+
+PROBLEM
+Təsəvvür edin ki, siz mühüm hadisələr haqqında öz istifadəçilərinizi xəbərdar etməyə imkan verən bildiriş kitabxanası üzərində işləyirsiniz.
+Kitabxananın ilkin versiyası yalnız bir neçə sahəyə, konstruktora və tək göndərmə metoduna malik olan Notifier sinfinə əsaslanırdı. 
+Metod müştəridən gələn mesaj arqumentini qəbul edə və mesajı konstruktor vasitəsilə bildirişçiyə ötürülən e-poçt siyahısına göndərə bilər.
+Müştəri kimi fəaliyyət göstərən üçüncü tərəf tətbiqi bildiriş obyektini bir dəfə yaratmalı və konfiqurasiya etməli, 
+sonra isə hər dəfə mühüm hadisə baş verəndə ondan istifadə etməli idi.
+img
+
+
+Bir nöqtədə, kitabxana istifadəçilərinin yalnız e-poçt bildirişlərindən daha çox şey gözlədiyini başa düşürsən.
+Onların bir çoxu kritik məsələlər barədə SMS almaq istəyir. 
+Digərləri Facebook-da xəbərdar olmaq istərdilər və əlbəttə ki, korporativ istifadəçilər Slack bildirişləri almaq istərdilər.
+img
+
+
+Bu nə qədər çətin ola bilər? Siz Notifier sinfini genişləndirdiniz və əlavə bildiriş üsullarını yeni alt siniflərə yerləşdirdiniz. 
+İndi müştəri istədiyi bildiriş sinfini yaratmalı və bundan sonrakı bütün bildirişlər üçün istifadə etməli idi.
+Amma sonra kimsə məntiqli şəkildə sizdən soruşdu: “Niyə eyni anda bir neçə bildiriş növündən istifadə edə bilmirsiniz? 
+Əgər eviniz yanırsa, yəqin ki, hər kanaldan xəbərdar olmaq istərdiniz”.
+Siz bir sinif daxilində bir neçə bildiriş metodunu birləşdirən xüsusi alt siniflər yaratmaqla bu problemi həll etməyə çalışdınız. 
+Bununla belə, tez bir zamanda məlum oldu ki, bu yanaşma təkcə kitabxana kodunu deyil, həm də müştəri kodunu hədsiz dərəcədə şişirdəcək.
+img
+
+
+Siz bildiriş siniflərini strukturlaşdırmaq üçün başqa yol tapmalısınız ki, onların sayı Ginnesin rekordlarını qırmasın.
+
+
+
+Bir obyektin davranışını dəyişdirmək lazım olanda ağla gələn ilk şey sinifin genişləndirilməsidir. Bununla belə, mirasın bilməli olduğunuz bir neçə ciddi xəbərdarlıq var.
+
+Vərəsəlik statikdir. Siz icra zamanı mövcud obyektin davranışını dəyişə bilməzsiniz. Siz yalnız bütün obyekti başqa alt sinifdən yaradılmış başqası ilə əvəz edə bilərsiniz.
+Alt siniflərdə yalnız bir ana sinif ola bilər. Əksər dillərdə irsiyyət bir sinifə eyni anda birdən çox sinfin davranışlarını miras qoymağa imkan vermir.
+Bu xəbərdarlıqların öhdəsindən gəlməyin yollarından biri miras əvəzinə Toplama və ya Kompozisiyadan istifadə etməkdir. 
+Alternativlərin hər ikisi demək olar ki, eyni şəkildə işləyir: bir obyekt digərinə istinad edir və ona müəyyən bir iş tapşırır, 
+halbuki mirasla obyektin özü bu işi görməyə qadirdir, davranışı öz supersinifindən miras alır.
+
+Bu yeni yanaşma ilə siz asanlıqla əlaqəli "köməkçi" obyekti başqası ilə əvəz edə, konteynerin iş zamanı davranışını dəyişə bilərsiniz. 
+Bir obyekt müxtəlif siniflərin davranışından istifadə edə bilər, birdən çox obyektə istinad edə bilər və onlara hər cür işi həvalə edə bilər. 
+Toplama/kompozisiya Dekorator da daxil olmaqla bir çox dizayn nümunələrinin əsas prinsipidir.
+img
+
+“WRAPPER”-"Sarıcı"  “Dekorator” patterninin alternativ adıdır. 
+Wrapper bəzi hədəf obyekti ilə əlaqələndirilə bilən bir obyektdir. 
+Wrapper hədəflə eyni metodlar toplusunu malikdir və aldığı hər hansı sorğuları ona həvalə edir. 
+Bununla belə,sorğunun hədəfə göndərilməsindən əvvəl və ya sonra bəzi hərəkətlər edərək nəticəni dəyişə bilər.
+
+Sadə bir wrapper nə vaxt əsl dekoratora çevrilir? Qeyd etdiyim kimi, wrapper bükülmüş obyektlə eyni interfeysi həyata keçirir. 
+Buna görə də müştəri baxımından bu obyektlər eynidir. Qapağın istinad sahəsinə həmin interfeysi izləyən istənilən obyekti qəbul edin. 
+Bu, obyekti bir neçə wrapperde örtməyə imkan verəcək və ona bütün wrapperlerin birləşmiş davranışını əlavə edəcək.
+
+Bildirişlər nümunəmizdə sadə e-poçt bildirişi davranışını əsas Notifier sinfində buraxaq, lakin bütün digər bildiriş üsullarını dekoratora çevirək.
+img
+
+Müştəri kodu əsas bildiriş obyektini müştərinin seçimlərinə uyğun gələn dekoratorlar dəstinə yığmalıdır. Yaranan obyektlər yığın kimi qurulacaq.
+img
+
+Yığındakı son dekorator müştərinin əslində işlədiyi obyekt olacaq. 
+Bütün dekoratorlar əsas bildirişçi ilə eyni interfeysi tətbiq etdiyinə görə, 
+müştəri kodunun qalan hissəsi onun “təmiz” bildiriş obyekti və ya bəzədilmiş obyektlə işləməsinə əhəmiyyət vermir.
+Eyni yanaşmanı mesajların formatlaşdırılması və ya alıcı siyahısının tərtib edilməsi kimi digər davranışlara da tətbiq edə bilərik. 
+Müştəri digərləri ilə eyni interfeysi izlədiyi müddətcə obyekti istənilən xüsusi dekoratorlarla bəzəyə bilər.
+
+
+Real-World Analogy
+Paltar geyinmək dekorativlərdən istifadə nümunəsidir. Üşüdükdə özünüzü sviterə sararsınız. 
+Əgər hələ də bir süveterlə soyuqsansa, üstünə bir pencək geyə bilərsiniz. Yağış yağırsa, palto geyinə bilərsiniz. 
+Bütün bu geyimlər sizin əsas davranışınızı “uzadar”, lakin sizin bir parçanız deyil və ehtiyacınız olmadığı zaman istənilən paltarı asanlıqla çıxara bilərsiniz.
+
+
+
+
+
+
